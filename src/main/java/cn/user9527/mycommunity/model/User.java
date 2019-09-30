@@ -1,0 +1,23 @@
+package cn.user9527.mycommunity.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
+public class User {
+
+  private Integer id;
+  private String accountId;
+  private String name;
+  private String token;
+  private Long gmtCreate;
+  private Long gmtModified;
+  private String avatarUrl;
+
+
+}

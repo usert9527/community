@@ -1,0 +1,44 @@
+github:
+  client:
+    id: a28778c13fddb2a9f970
+    secret: 624a3a493eee84bf4336010ab7f69ee03622011f
+  redirect:
+    uri: http://localhost:8080/callback
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  #驼峰命名法
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/myone?useJDBCCompliantTimezoneShift=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ##########################  druid配置   ######################
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,logback
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #    schema:
+  #      - classpath: user.sql
+#  profiles: dev
+
+
+
+logging:
+  level:
+    cn.user9527.mycommunity.mapper.*: debug
+#  path: D:\Springlog\log
