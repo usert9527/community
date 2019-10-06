@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>猿路回家</title>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:insert="navigation :: copy"></div>
+<div class="container-fluid main ">
+    <div class="row" >
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="border-right: 1px solid #efefef;" >
+            <h2 th:text="${sectionName}"></h2>
+            <hr />
+            <div class="media" th:each="question : ${questionDTOList}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-circle my" th:src="${question.user.avatarUrl}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" >
+                        <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
+                    </h4>
+                    <span th:text="${question.description}"></span>
+                    <span class="text-desc">
+                        [[${question.commentCount}]]个回复·[[${question.viewCount}]]次浏览·[[${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}]]
+                    </span>
+                </div>
+            </div>
+
+            <a th:href="@{'/profile/'+${section}(pageNum=1)}">首页</a>|
+            <a th:href="@{'/profile/'+${section}(pageNum=${pageUtil.nowPage}-1)}" th:if="${pageUtil.nowPage -1 > 0}">上一页|</a>
+            <a th:href="@{'/profile/'+${section}(pageNum=${pageUtil.nowPage}+1)}" th:if="${pageUtil.nowPage +1 < pageUtil.pageCount}">下一页|</a>
+            <a th:href="@{'/profile/'+${section}(pageNum=${pageUtil.endPage})}">末页</a> &nbsp;&nbsp;
+            第<span th:text="${pageUtil.nowPage}"></span> 页/共<span th:text="${pageUtil.pageCount}"></span>页
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 " >
+            <div class="list-group mysection">
+                <a href="/profile/questions"  th:class="${section == 'questions'}?'active list-group-item':'list-group-item'">我的发布</a>
+                <a href="/profile/replies"  th:class="${section == 'repits'}?'active list-group-item':'list-group-item'">最新回复</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

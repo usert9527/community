@@ -1,18 +1,19 @@
 package cn.user9527.mycommunity.controller;
 
+import cn.user9527.mycommunity.dto.QuestionDTO;
 import cn.user9527.mycommunity.mapper.QuestionMapper;
 import cn.user9527.mycommunity.mapper.UserMapper;
 import cn.user9527.mycommunity.model.Question;
 import cn.user9527.mycommunity.model.User;
+import cn.user9527.mycommunity.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,13 +23,22 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
 
-    @Autowired
-    private UserMapper userMapper;
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model mode) {
+
+        QuestionDTO question = questionService.getById(id,null);
+        mode.addAttribute("title",question.getTitle());
+        mode.addAttribute("description",question.getDescription());
+        mode.addAttribute("tag",question.getTag());
+        mode.addAttribute("id",question.getId());
+        return "publish";
+    }
 
     @GetMapping("/publish")
-    public String publish(){
+    public String publish() {
         return "publish";
     }
 
@@ -38,27 +48,13 @@ public class PublishController {
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
             HttpServletRequest request,
-            Model model){
-        User user = null;
+            Model model,
+            @RequestParam("id") Integer id) {
 
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null && cookies.length != 0){
-            for (int i = 0; i < cookies.length; i++) {
-                if(cookies[i].getName().equals("token")){
-                    String token = cookies[i].getValue();
+        User user = (User) request.getSession().getAttribute("user");
 
-                    user = userMapper.findByToken(token);
-
-                    if(user != null){
-                        System.out.println(user+"-----");
-                        request.getSession().setAttribute("user",user);
-                    }
-                    break;
-                }
-            }
-        }
-        if(user == null){
-            model.addAttribute("error","用户未登录");
+        if (user == null) {
+            model.addAttribute("error", "用户未登录");
             return "publish";
         }
 
@@ -67,10 +63,10 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(System.currentTimeMillis());
 
-        questionMapper.create(question);
+        question.setId(id);
+
+        questionService.createOrUpdate(question);
 
         return "redirect:/";
 

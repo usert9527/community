@@ -1,3 +1,10 @@
+########## 分页插件 #########
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
 github:
   client:
     id: a28778c13fddb2a9f970
@@ -38,7 +45,8 @@ spring:
 
 
 
-logging:
-  level:
-    cn.user9527.mycommunity.mapper.*: debug
+#logging:
+#  level:
+#    cn.user9527.mycommunity.mapper.*: debug
 #  path: D:\Springlog\log
+
