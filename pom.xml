@@ -91,17 +91,40 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!--加入自动生成mybatis的插件-->
+            <!--添加mybatis generator maven插件-->
             <plugin>
+                <!--mybatis-generator:generate-->
                 <groupId>org.mybatis.generator</groupId>
+                <!--配置插件的依赖项-->
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.7</version>
-
+                <version>1.3.5</version>
+                <configuration>
+                    <!--
+                        generatorConfig.xml位置
+                        mybatis-generator.xml在这个里面指定了数据库,表,连接等一些信息
+                    -->
+                    <configurationFile>src/main/resources/mybatis-generator.xml</configurationFile>
+                    <!--允许移动生成的文件-->
+                    <verbose>true</verbose>
+                    <!--允许自动覆盖文件  如果没有设置将不会更新我们数据库中的修改-->
+                    <overwrite>true</overwrite>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>Generate MyBatis Artifacts</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
                 <!--此处必须添加mysql驱动包  ssm中教过吗-->
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.13</version>
+                        <version>8.0.16</version>
                     </dependency>
                 </dependencies>
             </plugin>

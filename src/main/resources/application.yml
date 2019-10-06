@@ -14,7 +14,7 @@ github:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true  #驼峰命名法
-
+  mapper-locations: classpath:mybatis/mapper/*.xml
 spring:
   datasource:
     username: root

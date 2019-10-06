@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--
+        id可以自己指定  targetRuntime 使用MyBatis的方式进行ORM映射
+        serverTimezone=UTC  记得指定时区  不然极有可能回抛错
+    -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/myone?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone=UTC"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+        <!-- 生成DataObject类存放位置 entity-->
+        <javaModelGenerator targetPackage="cn.user9527.mycommunity.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 生成映射文件存放位置 -->
+        <sqlMapGenerator targetPackage="mybatis.mapper"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 生成Dao类存放位置 -->
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件的代码
+              type="ANNOTATIONDMAPPER"，生成Java Model和基于注解的Mapper 对象
+              type="MIXEDMAPPER",生成基于注解的Java Model和相应的Mapper对象
+              type="XMLMAPPER",生成SQLMap XML 文件和独立的Mapper接口-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.user9527.mycommunity.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!--domainObjectName 对应的实体类的名字-->
+        <!--设置不自动生成复杂的增删改-->
+        <table schema="myone"
+                   tableName="comment" domainObjectName="Comment"
+
+        >
+        </table>
+
+    </context>
+</generatorConfiguration>

@@ -27,7 +27,13 @@ public class QuestionController {
 
         User user = (User)request.getSession().getAttribute("user");
 
-        QuestionDTO questionDTO = questionService.getById(id,user.getId());
+        System.out.println("是"+user);
+        Integer userId = null;
+        if(user != null){
+            userId = user.getId();
+        }
+
+        QuestionDTO questionDTO = questionService.getById(id,userId);
         //累加阅读数
 //        questionService.addView(id);
 
