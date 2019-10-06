@@ -39,6 +39,7 @@ public class IndexController {
 
         model.addAttribute("questionDTOList", questionDTOList);
         model.addAttribute("pageUtil", pageUtil);
+
         return "index";
     }
 
