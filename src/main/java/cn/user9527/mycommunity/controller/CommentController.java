@@ -30,13 +30,12 @@ public class CommentController {
     @ResponseBody
     public Object post(@RequestBody CommentDTO commentDTO, HttpServletRequest request){
 
-//        User user = (User) request.getSession().getAttribute("user");
-//
-//        System.out.println("否"+user);
-//
-//        if(user == null){
-//            return ResultComment.errorOf(CustomizeErrorCode.NO_LOGIN);
-//        }
+        System.out.println("-----------劲来了");
+
+        User user = (User) request.getSession().getAttribute("user");
+        if(user == null){
+            return ResultComment.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
 
         Comment comment = new Comment();
         comment.setParentId(commentDTO.getParentId());
@@ -44,7 +43,7 @@ public class CommentController {
         comment.setComment(commentDTO.getComment());
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(System.currentTimeMillis());
-//        comment.setCommentator(user.getId());
+        comment.setCommentator(user.getId());
 
         BeanUtils.copyProperties(commentDTO,comment);
         commentService.insert(comment);

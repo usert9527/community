@@ -12,6 +12,8 @@ github:
   redirect:
     uri: http://localhost:8080/callback
 mybatis:
+
+
   configuration:
     map-underscore-to-camel-case: true  #驼峰命名法
   mapper-locations: classpath:mybatis/mapper/*.xml
