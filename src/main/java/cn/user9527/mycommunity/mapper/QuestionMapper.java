@@ -49,9 +49,16 @@ public interface QuestionMapper {
             "FROM `myone`.`question` where id = #{id} ")
     Question getById(@Param("id") Integer id);
 
+
+
+
     @Update("update question set title = #{title},description = #{description},gmt_modified = #{gmtModified},tag = #{tag} where id = #{id}")
     Integer update(Question question);
 
+
     @Update("UPDATE question SET view_count =view_count + 1 WHERE id = #{id}")
     Integer update_ById_Question(Integer id);
+
+    @Update("UPDATE question SET comment_count2 = comment_count + 1 WHERE id = #{id}")
+    Integer update_Comment_Count(Integer id);
 }

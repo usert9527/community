@@ -4,6 +4,7 @@ import cn.user9527.mycommunity.model.Comment;
 import cn.user9527.mycommunity.model.CommentExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface CommentMapper {
     /**
@@ -61,4 +62,8 @@ public interface CommentMapper {
      * @mbg.generated Sun Oct 06 19:52:13 CST 2019
      */
     int updateByExample(@Param("record") Comment record, @Param("example") CommentExample example);
+
+    @Select("SELECT `id`,`parent_id`,`type`,`commentator`,`gmt_create`,`gmt_modified`,`like_count`,`comment` \n" +
+            "FROM `myone`.`comment`  WHERE parent_id = #{id}")
+    Comment selectByParentKey(Integer id);
 }
