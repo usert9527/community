@@ -30,6 +30,10 @@ public interface QuestionMapper {
             "FROM `myone`.`question` LIMIT  #{rowStart},#{pageSize} ")
     List<Question> all_Question(PageUtil util);
 
+    /**
+     * 查询问题总数  分页
+     * @return
+     */
     @Select("select count(1) from question")
     Integer num_Question();
 

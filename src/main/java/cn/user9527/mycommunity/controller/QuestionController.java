@@ -1,7 +1,10 @@
 package cn.user9527.mycommunity.controller;
 
+import cn.user9527.mycommunity.dto.CommentDTO;
+import cn.user9527.mycommunity.dto.CommentTypeEnum;
 import cn.user9527.mycommunity.dto.QuestionDTO;
 import cn.user9527.mycommunity.model.User;
+import cn.user9527.mycommunity.service.CommentService;
 import cn.user9527.mycommunity.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @date 2019/10/2 - 10:28
@@ -20,6 +24,9 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Integer id,
                            Model model,
@@ -27,7 +34,6 @@ public class QuestionController {
 
         User user = (User)request.getSession().getAttribute("user");
 
-        System.out.println("是"+user);
         Integer userId = null;
         if(user != null){
             userId = user.getId();
@@ -37,8 +43,12 @@ public class QuestionController {
         //累加阅读数
 //        questionService.addView(id);
 
-        model.addAttribute("questionDTOList", questionDTO);
+        List<CommentDTO> commentDTOList = commentService.listByTargeId(id, CommentTypeEnum.QUESTION);
 
+        System.out.println(commentDTOList+"-----------");
+
+        model.addAttribute("questionDTOList", questionDTO);
+        model.addAttribute("commentDTOList", commentDTOList);
         return "question";
     }
 

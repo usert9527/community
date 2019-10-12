@@ -1,24 +1,25 @@
 package cn.user9527.mycommunity.dto;
 
+import cn.user9527.mycommunity.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
 
 /**
- * @date 2019/10/6 - 19:34
+ * @date 2019/10/9 - 22:33
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
-public class CommentDTO implements Serializable {
+public class CommentDTO {
 
+    private Integer id;
     private Integer parentId;
-    private String comment;
     private Integer type;
-
-
+    private Integer commentator;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Long likeCount;
+    private String comment;
+    private User user;
 }

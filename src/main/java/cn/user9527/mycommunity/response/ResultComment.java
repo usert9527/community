@@ -13,6 +13,7 @@ public class ResultComment {
 
     private Integer code;
     private String message;
+    private Object data;
 
     public static ResultComment errorOf(Integer code, String message) {
         ResultComment resultComment = new ResultComment();
@@ -33,6 +34,13 @@ public class ResultComment {
         ResultComment resultComment = new ResultComment();
         resultComment.setCode(200);
         resultComment.setMessage("请求成功");
+        return resultComment;
+    }
+    public static ResultComment okOf(Object object){
+        ResultComment resultComment = new ResultComment();
+        resultComment.setCode(200);
+        resultComment.setMessage("请求成功");
+        resultComment.setData(object);
         return resultComment;
     }
 

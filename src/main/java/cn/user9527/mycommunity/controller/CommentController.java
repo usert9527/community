@@ -1,21 +1,21 @@
 package cn.user9527.mycommunity.controller;
 
+import cn.user9527.mycommunity.dto.CommentCreateDTO;
 import cn.user9527.mycommunity.dto.CommentDTO;
+import cn.user9527.mycommunity.dto.CommentTypeEnum;
 import cn.user9527.mycommunity.exception.CustomizeErrorCode;
-import cn.user9527.mycommunity.mapper.CommentMapper;
 import cn.user9527.mycommunity.model.Comment;
 import cn.user9527.mycommunity.model.User;
 import cn.user9527.mycommunity.response.ResultComment;
 import cn.user9527.mycommunity.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @date 2019/10/6 - 19:26
@@ -28,13 +28,13 @@ public class CommentController {
 
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     @ResponseBody
-    public Object post(@RequestBody CommentDTO commentDTO, HttpServletRequest request){
-
-        System.out.println("-----------劲来了");
-
+    public Object post(@RequestBody CommentCreateDTO commentDTO, HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
         if(user == null){
             return ResultComment.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        if(commentDTO == null || StringUtils.isBlank(commentDTO.getComment())){
+            return  ResultComment.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
         }
 
         Comment comment = new Comment();
@@ -49,6 +49,16 @@ public class CommentController {
         commentService.insert(comment);
 
         return ResultComment.okOf();
+    }
+
+    @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
+    @ResponseBody
+    public ResultComment comments(@PathVariable(name="id") Integer id){
+
+
+        List<CommentDTO> commentDTOS = commentService.listByTargeId(id, CommentTypeEnum.COMMENT);
+
+        return ResultComment.okOf(commentDTOS);
     }
 }
 

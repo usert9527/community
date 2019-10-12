@@ -11,7 +11,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     NO_LOGIN(1004,"未登入,请登入后再试"),
     SYS_ERROR(1005,"服务冒烟了，要不然你稍后再试"),
     TYPE_PARAM_WRONG(1006,"该问题已经删除或不存在"),
-    COMMENT_NOT_FOUND(1007,"回复的评论不存在了");
+    COMMENT_NOT_FOUND(1007,"回复的评论不存在了"),
+    CONTENT_IS_EMPTY(1008,"回复不能为空··");
 
     private int errCode;
     private String errMsg;

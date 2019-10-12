@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.user9527.mycommunity.mapper.UserMapper">
+
+    <resultMap id="users" type="cn.user9527.mycommunity.model.User">
+        <id property="id" column="id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="name" column="name"/>
+        <result property="token" column="token"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="avatarUrl" column="avatar_url"/>
+    </resultMap>
+
+    <select id="selectListByUserId" resultType="cn.user9527.mycommunity.model.User" >
+        select id, account_id, name, token, gmt_create, gmt_modified, avatar_url from user
+        where id in 
+        <foreach collection="list" item="id" separator=","
+                 open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

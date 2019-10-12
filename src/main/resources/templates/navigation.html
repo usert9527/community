@@ -27,7 +27,7 @@
                         <a href="/publish">发布</a>
                     </li>
 
-                    <li th:case="null"><a href="https://github.com/login/oauth/authorize?client_id=a28778c13fddb2a9f970&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a></li>
+                    <li th:case="null"><a href="https://github.com/login/oauth/authorize?client_id=a28778c13fddb2a9f970&redirect_uri=http://localhost/callback&scope=user&state=1">登录</a></li>
                     <li class="dropdown" th:case="*">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                             <span th:text="${session.user.name}"></span>

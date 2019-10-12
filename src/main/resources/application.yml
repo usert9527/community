@@ -1,3 +1,4 @@
+
 ########## 分页插件 #########
 pagehelper:
   helperDialect: mysql
@@ -10,7 +11,7 @@ github:
     id: a28778c13fddb2a9f970
     secret: 624a3a493eee84bf4336010ab7f69ee03622011f
   redirect:
-    uri: http://localhost:8080/callback
+    uri: http://localhost/callback
 mybatis:
 
 
@@ -47,8 +48,9 @@ spring:
 
 
 
-#logging:
-#  level:
-#    cn.user9527.mycommunity.mapper.*: debug
+logging:
+  level:
+    cn.user9527.mycommunity.mapper.*: debug
 #  path: D:\Springlog\log
-
+server:
+  port: 80
