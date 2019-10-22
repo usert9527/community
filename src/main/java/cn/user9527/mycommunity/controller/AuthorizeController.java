@@ -38,6 +38,13 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String cedirectUri;
 
+    /**
+     * 回调
+     * @param code
+     * @param state
+     * @param response
+     * @return
+     */
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,

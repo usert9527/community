@@ -1,4 +1,4 @@
-package cn.user9527.mycommunity.dto;
+package cn.user9527.mycommunity.enums;
 
 /**
  * @date 2019/10/6 - 22:43

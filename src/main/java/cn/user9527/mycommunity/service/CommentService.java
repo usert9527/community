@@ -1,8 +1,9 @@
 package cn.user9527.mycommunity.service;
 
 import cn.user9527.mycommunity.dto.CommentDTO;
-import cn.user9527.mycommunity.dto.CommentTypeEnum;
+import cn.user9527.mycommunity.enums.CommentTypeEnum;
 import cn.user9527.mycommunity.model.Comment;
+import cn.user9527.mycommunity.model.User;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface CommentService {
 
-     void insert(Comment comment);
+     void insert(Comment comment, User commentator);
 
     List<CommentDTO> listByTargeId(Integer id, CommentTypeEnum type);
 }

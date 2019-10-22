@@ -27,7 +27,7 @@ public interface QuestionMapper {
      * @return
      */
     @Select("SELECT `id`,`title`,`description`,`gmt_create`,`gmt_modified`,`creator`,`comment_count`,`view_count`,`like_count`,`tag` \n" +
-            "FROM `myone`.`question` LIMIT  #{rowStart},#{pageSize} ")
+            "FROM `myone`.`question`  ORDER BY gmt_create desc LIMIT  #{rowStart},#{pageSize} ")
     List<Question> all_Question(PageUtil util);
 
     /**
@@ -56,7 +56,7 @@ public interface QuestionMapper {
 
 
 
-    @Update("update question set title = #{title},description = #{description},gmt_modified = #{gmtModified},tag = #{tag} where id = #{id}")
+    @Update("update question set title = #{title},description = #{description},gmt_modified = #{gmtModified} where id = #{id}")
     Integer update(Question question);
 
 
@@ -65,4 +65,13 @@ public interface QuestionMapper {
 
     @Update("UPDATE question SET comment_count = comment_count + 1 WHERE id = #{id}")
     Integer update_Comment_Count(Integer id);
+
+    /**
+     * 相关问题
+     * @param question
+     * @return
+     */
+    @Select("select id, title, description, gmt_create, gmt_modified, creator, comment_count, view_count, like_count, tag\n" +
+            "from question where tag REGEXP #{tag} and id != #{id}")
+    List<Question> selectRelated(Question question);
 }

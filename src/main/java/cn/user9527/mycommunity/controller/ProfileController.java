@@ -30,27 +30,39 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 个人问题 和 最新回复
+     * @param action
+     * @param model
+     * @param request
+     * @param pageNum
+     * @return
+     */
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model,
                           HttpServletRequest request,
                           @RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum) {
+
+        User user = (User)request.getSession().getAttribute("user");
+        if(user == null){
+            return "redirect:/";
+        }
+        // 我的发布
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的发布");
+            if (user != null) {
+                PageUtil pageUtil = new PageUtil(5, pageNum, questionService.this_Question(user.getId()));
+                List<QuestionDTO> questionDTOList = questionService.select_Question(user.getId(), pageUtil);
+                model.addAttribute("questionDTOList", questionDTOList);
+                model.addAttribute("pageUtil", pageUtil);
+            }
         } else if ("replies".equals(action)) {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
         }
 
-        User user = (User)request.getSession().getAttribute("user");
-
-        if (user != null) {
-            PageUtil pageUtil = new PageUtil(5, pageNum, questionService.this_Question(user.getId()));
-            List<QuestionDTO> questionDTOList = questionService.select_Question(user.getId(), pageUtil);
-            model.addAttribute("questionDTOList", questionDTOList);
-            model.addAttribute("pageUtil", pageUtil);
-        }
         return "profile";
     }
 

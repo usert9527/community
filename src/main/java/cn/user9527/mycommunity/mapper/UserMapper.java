@@ -13,6 +13,10 @@ import java.util.List;
  */
 public interface UserMapper {
 
+    /**
+     * 添加用户
+     * @param user
+     */
     @Insert("insert into user(account_id,name,token,gmt_create,gmt_modified,avatar_url) value(#{accountId},#{name},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl})")
     void insert(User user);
 
@@ -21,6 +25,7 @@ public interface UserMapper {
 
     @Select("select id,account_id,name,token,gmt_create,gmt_modified,avatar_url from user where id = #{id}")
     User findById(@Param("id") Integer id);
+
     @Select("select id,account_id,name,token,gmt_create,gmt_modified,avatar_url from user where account_id = #{id}")
     User findByIdAccountId(String accountId);
 

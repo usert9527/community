@@ -44,13 +44,13 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   #    schema:
   #      - classpath: user.sql
-#  profiles: dev
-
+  redis:
+    host: 106.53.74.231
 
 
 logging:
   level:
     cn.user9527.mycommunity.mapper.*: debug
-#  path: D:\Springlog\log
 server:
   port: 80
+

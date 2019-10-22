@@ -1,16 +1,16 @@
 package cn.user9527.mycommunity.service.impl;
 
 import cn.user9527.mycommunity.dto.CommentDTO;
-import cn.user9527.mycommunity.dto.CommentTypeEnum;
+import cn.user9527.mycommunity.enums.CommentTypeEnum;
+import cn.user9527.mycommunity.enums.NotificationStatusEnum;
+import cn.user9527.mycommunity.enums.NotificationTypeEnum;
 import cn.user9527.mycommunity.exception.CustomizeErrorCode;
 import cn.user9527.mycommunity.exception.CustomizeException;
 import cn.user9527.mycommunity.mapper.CommentMapper;
+import cn.user9527.mycommunity.mapper.NotificationMapper;
 import cn.user9527.mycommunity.mapper.QuestionMapper;
 import cn.user9527.mycommunity.mapper.UserMapper;
-import cn.user9527.mycommunity.model.Comment;
-import cn.user9527.mycommunity.model.CommentExample;
-import cn.user9527.mycommunity.model.Question;
-import cn.user9527.mycommunity.model.User;
+import cn.user9527.mycommunity.model.*;
 import cn.user9527.mycommunity.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +37,12 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     @Override
-    public void insert(Comment comment) {
+    public void insert(Comment comment,User commentator) {
+
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
@@ -55,22 +59,56 @@ public class CommentServiceImpl implements CommentService {
             if (comment1 == null) {
                 throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
             }
+
+            Question byId = questionMapper.getById(comment1.getParentId());
+            if (byId == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_EXISTS);
+            }
             commentMapper.insert(comment);
-//            return commentMapper.insertSelective(comment);
+
+            commentMapper.updateById(comment.getParentId());
+
+            //通知回复评论
+            createNotify(comment, comment1.getCommentator(), commentator.getName(), byId.getTitle(), NotificationTypeEnum.PEPLY_COMMENT);
+            //return commentMapper.insertSelective(comment);
         } else {
 
             //回复问题
             Question byId = questionMapper.getById(comment.getParentId());
+
             if (byId == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_EXISTS);
             }
 
             questionMapper.update_Comment_Count(comment.getParentId());
 
-           commentMapper.insert(comment);
+            commentMapper.insert(comment);
+
+            createNotify(comment, byId.getCreator(), commentator.getName(), byId.getTitle(),NotificationTypeEnum.REPLY_QUESTION);
+
         }
     }
 
+    private void createNotify(Comment comment, Integer receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationTypeEnum) {
+        Notification record = new Notification();
+        record.setGmtCreate(System.currentTimeMillis());
+        record.setType(notificationTypeEnum.getType());
+        record.setOuterld(comment.getParentId());
+        record.setNotifier(comment.getCommentator());
+        record.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        record.setNotifierName(notifierName);
+        record.setOuterTitle(outerTitle);
+        record.setReceiver(receiver);
+
+        notificationMapper.insert(record);
+    }
+
+    /**
+     * jkd 1.8新语法
+     * @param id
+     * @param type
+     * @return
+     */
     @Override
     public List<CommentDTO> listByTargeId(Integer id, CommentTypeEnum type) {
 
@@ -89,11 +127,9 @@ public class CommentServiceImpl implements CommentService {
         List<Integer> userIds = new ArrayList<>();
         userIds.addAll(commentators);
 
-        System.out.println(userIds+"---");
         //获取评论人并转换为 Map
         List<User> users = userMapper.selectListByUserId(userIds);
 
-        System.out.println(users+"------------");
         Map<Integer, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
 
         //转换comment 为 commentDTO

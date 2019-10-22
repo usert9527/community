@@ -1,5 +1,6 @@
 package cn.user9527.mycommunity.service;
 
+import cn.user9527.mycommunity.dto.CommentDTO;
 import cn.user9527.mycommunity.dto.QuestionDTO;
 import cn.user9527.mycommunity.exception.CustomizeException;
 import cn.user9527.mycommunity.model.Question;
@@ -28,4 +29,6 @@ public interface QuestionService {
     void createOrUpdate(Question question);
 
     void addView(Integer id);
+
+    List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
 }

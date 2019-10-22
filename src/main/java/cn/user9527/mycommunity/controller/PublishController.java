@@ -25,15 +25,22 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 修改问题
+     * @param id 问题 id
+     * @param mode
+     * @return
+     */
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Integer id,
                        Model mode) {
 
-        QuestionDTO question = questionService.getById(id,null);
-        mode.addAttribute("title",question.getTitle());
-        mode.addAttribute("description",question.getDescription());
-        mode.addAttribute("tag",question.getTag());
-        mode.addAttribute("id",question.getId());
+        QuestionDTO question = questionService.getById(id, null);
+        mode.addAttribute("title", question.getTitle());
+        mode.addAttribute("description", question.getDescription());
+//        mode.addAttribute("tag", question.getTag());
+        mode.addAttribute("id", question.getId());
+        mode.addAttribute("tarr", "1");
         return "publish";
     }
 
@@ -42,11 +49,21 @@ public class PublishController {
         return "publish";
     }
 
+    /**
+     * 发布问题
+     * @param title 标题
+     * @param description 描述
+     * @param tag 标签
+     * @param request
+     * @param model
+     * @param id
+     * @return
+     */
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
-            @RequestParam("tag") String tag,
+            @RequestParam(name = "tag",required = false) String tag,
             HttpServletRequest request,
             Model model,
             @RequestParam("id") Integer id) {

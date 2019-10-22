@@ -34,10 +34,17 @@
         </javaClientGenerator>
         <!--domainObjectName 对应的实体类的名字-->
         <!--设置不自动生成复杂的增删改-->
+        <!--<table schema="myone"-->
+                   <!--tableName="tar" domainObjectName="Tar"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"-->
+        <!--&gt;-->
+        <!--</table>-->
         <table schema="myone"
-                   tableName="comment" domainObjectName="Comment"
-
-        >
+               tableName="notification" domainObjectName="Notification" >
         </table>
 
     </context>

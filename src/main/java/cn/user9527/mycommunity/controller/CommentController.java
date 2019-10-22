@@ -2,7 +2,7 @@ package cn.user9527.mycommunity.controller;
 
 import cn.user9527.mycommunity.dto.CommentCreateDTO;
 import cn.user9527.mycommunity.dto.CommentDTO;
-import cn.user9527.mycommunity.dto.CommentTypeEnum;
+import cn.user9527.mycommunity.enums.CommentTypeEnum;
 import cn.user9527.mycommunity.exception.CustomizeErrorCode;
 import cn.user9527.mycommunity.model.Comment;
 import cn.user9527.mycommunity.model.User;
@@ -26,6 +26,12 @@ public class CommentController {
     @Autowired
    private CommentService commentService;
 
+    /**
+     * 添加评论 和 回复评论
+     * @param commentDTO
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     @ResponseBody
     public Object post(@RequestBody CommentCreateDTO commentDTO, HttpServletRequest request){
@@ -44,9 +50,9 @@ public class CommentController {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(System.currentTimeMillis());
         comment.setCommentator(user.getId());
-
+        comment.setCommentCount(0);
         BeanUtils.copyProperties(commentDTO,comment);
-        commentService.insert(comment);
+        commentService.insert(comment,user);
 
         return ResultComment.okOf();
     }
@@ -54,8 +60,6 @@ public class CommentController {
     @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
     @ResponseBody
     public ResultComment comments(@PathVariable(name="id") Integer id){
-
-
         List<CommentDTO> commentDTOS = commentService.listByTargeId(id, CommentTypeEnum.COMMENT);
 
         return ResultComment.okOf(commentDTOS);
