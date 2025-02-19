@@ -20,6 +20,8 @@ public class AccessTokenDTO  {
     private String state;
 
     private String two;
+    private String two1;
+    private String two3;
 
 
 }
