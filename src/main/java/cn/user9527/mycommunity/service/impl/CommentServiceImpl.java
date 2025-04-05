@@ -78,6 +78,7 @@ public class CommentServiceImpl implements CommentService {
 
             if (byId == null) {
                 // 2
+                // 3
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_EXISTS);
             }
 
