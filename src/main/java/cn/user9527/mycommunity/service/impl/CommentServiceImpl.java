@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
             if (byId == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_EXISTS);
             }
-
+            // 1
             questionMapper.update_Comment_Count(comment.getParentId());
 
             commentMapper.insert(comment);
