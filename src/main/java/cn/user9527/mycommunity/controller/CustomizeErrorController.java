@@ -29,10 +29,11 @@ public class CustomizeErrorController implements ErrorController {
     public ModelAndView errorHtml(HttpServletRequest request, Model model) {
         HttpStatus status = getStatus(request);
         if(status.is4xxClientError()){
+            // 123
             model.addAttribute("message","你这个请求错了吧，换个姿势试一下？");
         }
         if(status.is5xxServerError()){
-            model.addAttribute("message","服务冒烟了，要不然你稍后再试");
+            model.addAttribute("message","111服务冒烟了，要不然你稍后再试");
         }
 
         return new ModelAndView("error");
